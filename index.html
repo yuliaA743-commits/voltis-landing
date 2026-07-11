@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VOLTIS — Альтернативна енергія без компромісів</title>
+<meta name="description" content="Сонячні панелі та вітрові турбіни під ключ. Розрахуйте економію та отримайте безкоштовний аудит вашого об'єкта.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #060b14;
+    --bg-2: #0d1526;
+    --bg-3: #101c33;
+    --line: rgba(255,255,255,0.08);
+    --text: #eaf2f5;
+    --muted: #7c8ca0;
+    --cyan: #2de1c2;
+    --cyan-dim: rgba(45,225,194,0.15);
+    --amber: #ffb84d;
+    --amber-dim: rgba(255,184,77,0.15);
+    --glitch-red: #ff3366;
+    --glitch-blue: #3388ff;
+    --radius: 14px;
+    --maxw: 1200px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- background energy grid ---------- */
+  .bg-grid{
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+    pointer-events:none;
+    z-index:0;
+    opacity:0.5;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    backdrop-filter:blur(12px);
+    background:rgba(6,11,20,0.7);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 24px;
+    max-width:var(--maxw);
+    margin:0 auto;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+  }
+  .logo-mark{
+    width:28px;height:28px;
+    position:relative;
+  }
+  .logo-mark svg{width:100%;height:100%;}
+  .nav-links{
+    display:flex;gap:32px;
+    font-size:0.92rem;
+    color:var(--muted);
+  }
+  .nav-links a{transition:color .2s;}
+  .nav-links a:hover{color:var(--cyan);}
+  .nav-cta{
+    display:flex;align-items:center;gap:16px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 22px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.88rem;
+    transition:transform .2s, box-shadow .2s, background .2s;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--cyan);
+    color:#03110d;
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(45,225,194,0.35);
+  }
+  .btn-ghost{
+    border:1px solid var(--line);
+    color:var(--text);
+  }
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);}
+
+  .burger{display:none;width:24px;height:18px;position:relative;flex-direction:column;justify-content:space-between;}
+  .burger span{display:block;height:2px;background:var(--text);border-radius:2px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    padding-top:90px;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    z-index:-2;
+  }
+  .hero-bg img{
+    width:100%;height:100%;object-fit:cover;
+    filter:saturate(1.05) brightness(0.55);
+  }
+  .hero-bg::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(6,11,20,0.4) 0%, rgba(6,11,20,0.55) 45%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(6,11,20,0.85) 0%, rgba(6,11,20,0.15) 55%);
+  }
+  .hero-inner{
+    position:relative;
+    z-index:1;
+    padding:60px 0 100px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    color:var(--cyan);
+    border:1px solid var(--cyan-dim);
+    background:var(--cyan-dim);
+    padding:7px 14px;
+    border-radius:999px;
+    margin-bottom:28px;
+  }
+  .pulse-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 0 0 rgba(45,225,194,0.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(45,225,194,0.55);}
+    70%{box-shadow:0 0 0 10px rgba(45,225,194,0);}
+    100%{box-shadow:0 0 0 0 rgba(45,225,194,0);}
+  }
+
+  .hero h1{
+    font-size:clamp(2.6rem, 6.5vw, 5.2rem);
+    font-weight:700;
+    line-height:1.02;
+    max-width:900px;
+    margin-bottom:26px;
+  }
+  .hero h1 .line{display:block;}
+
+  /* glitch text effect — signature element */
+  .glitch{
+    position:relative;
+    display:inline-block;
+    color:var(--text);
+  }
+  .glitch::before,
+  .glitch::after{
+    content:attr(data-text);
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    clip-path: inset(0 0 100% 0);
+  }
+  .glitch::before{
+    color:var(--glitch-red);
+    left:2px;
+    text-shadow:-1px 0 var(--glitch-red);
+    animation:glitchTop 5.5s infinite linear;
+  }
+  .glitch::after{
+    color:var(--cyan);
+    left:-2px;
+    text-shadow:1px 0 var(--cyan);
+    animation:glitchBottom 5.5s infinite linear;
+  }
+  @keyframes glitchTop{
+    0%,92%,100%{clip-path:inset(0 0 100% 0); transform:translate(0,0);}
+    92.5%{clip-path:inset(15% 0 60% 0); transform:translate(-3px,-2px);}
+    93%{clip-path:inset(45% 0 30% 0); transform:translate(3px,1px);}
+    93.5%{clip-path:inset(5% 0 80% 0); transform:translate(-2px,0);}
+    94%{clip-path:inset(0 0 100% 0); transform:translate(0,0);}
+  }
+  @keyframes glitchBottom{
+    0%,90%,100%{clip-path:inset(0 0 100% 0); transform:translate(0,0);}
+    90.5%{clip-path:inset(60% 0 5% 0); transform:translate(3px,2px);}
+    91%{clip-path:inset(20% 0 55% 0); transform:translate(-3px,-1px);}
+    91.5%{clip-path:inset(70% 0 10% 0); transform:translate(2px,0);}
+    92%{clip-path:inset(0 0 100% 0); transform:translate(0,0);}
+  }
+
+  .hero p.lead{
+    font-size:clamp(1rem, 1.6vw, 1.2rem);
+    color:var(--muted);
+    max-width:540px;
+    margin-bottom:38px;
+  }
+  .hero-actions{
+    display:flex;gap:16px;flex-wrap:wrap;
+    margin-bottom:56px;
+  }
+  .btn-lg{padding:15px 30px;font-size:0.95rem;}
+
+  /* energy pulse wire — recurring motif */
+  .pulse-wire{
+    position:relative;
+    height:2px;
+    width:100%;
+    max-width:640px;
+    background:var(--line);
+    margin-bottom:8px;
+  }
+  .pulse-wire::before{
+    content:"";
+    position:absolute;top:0;left:0;
+    height:100%;width:40px;
+    background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation:travel 3.2s linear infinite;
+    filter:drop-shadow(0 0 6px var(--cyan));
+  }
+  @keyframes travel{
+    0%{left:-40px;}
+    100%{left:100%;}
+  }
+
+  .hero-stats{
+    display:flex;gap:48px;flex-wrap:wrap;
+  }
+  .stat{}
+  .stat .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--cyan);
+  }
+  .stat .lbl{
+    font-size:0.8rem;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  /* hero preview cards — solar / wind thumbnails */
+  .hero-preview{
+    display:flex;
+    gap:16px;
+    margin-top:44px;
+    max-width:520px;
+  }
+  .preview-card{
+    position:relative;
+    flex:1;
+    aspect-ratio:4/3;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--bg-2);
+    backdrop-filter:blur(6px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+    transition:transform .35s ease, border-color .35s ease;
+  }
+  .preview-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--cyan-dim);
+  }
+  .preview-card img{
+    width:100%;height:100%;
+    object-fit:cover;
+    transition:transform .5s ease, filter .3s ease;
+    filter:saturate(1.05);
+  }
+  .preview-card:hover img{transform:scale(1.08);}
+  .preview-card::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(6,11,20,0) 40%, rgba(6,11,20,0.85) 100%);
+    pointer-events:none;
+  }
+  .preview-tag{
+    position:absolute;
+    left:12px;bottom:10px;
+    z-index:1;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    color:var(--text);
+    background:rgba(6,11,20,0.55);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    border-radius:999px;
+  }
+  @media (max-width:520px){
+    .hero-preview{max-width:100%;}
+  }
+
+  /* ---------- section basics ---------- */
+  section{position:relative;z-index:1;padding:110px 0;}
+  .section-head{
+    max-width:640px;
+    margin-bottom:64px;
+  }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:block;
+  }
+  .section-head h2{
+    font-size:clamp(1.9rem, 4vw, 2.8rem);
+    font-weight:600;
+    line-height:1.15;
+  }
+  .section-head p{
+    color:var(--muted);
+    margin-top:18px;
+    font-size:1.05rem;
+  }
+
+  .divider{
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+    position:relative;
+  }
+  .divider::before{
+    content:"";
+    position:absolute;top:-1px;left:50%;
+    width:120px;height:3px;
+    background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+    filter:blur(1px);
+    transform:translateX(-50%);
+  }
+
+  /* ---------- reasons ---------- */
+  .reasons-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .reason-card{
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    transition:transform .3s, border-color .3s, background .3s;
+  }
+  .reason-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--cyan-dim);
+    background:var(--bg-3);
+  }
+  .reason-icon{
+    width:44px;height:44px;
+    margin-bottom:20px;
+    color:var(--cyan);
+  }
+  .reason-card h3{font-size:1.15rem;font-weight:600;margin-bottom:10px;}
+  .reason-card p{color:var(--muted);font-size:0.94rem;}
+
+  /* ---------- products ---------- */
+  .products-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+  }
+  .product-card{
+    position:relative;
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--bg-2);
+    aspect-ratio:4/5;
+    display:flex;
+    align-items:flex-end;
+    isolation:isolate;
+  }
+  .product-card img{
+    position:absolute;inset:0;
+    width:100%;height:100%;object-fit:cover;
+    z-index:-2;
+    transition:transform .6s ease;
+  }
+  .product-card:hover img{transform:scale(1.07);}
+  .product-card::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(6,11,20,0) 20%, rgba(6,11,20,0.92) 90%);
+    z-index:-1;
+  }
+  .product-body{
+    padding:30px;
+    position:relative;
+    width:100%;
+  }
+  .product-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--amber);
+    display:block;
+    margin-bottom:10px;
+  }
+  .product-body h3{font-size:1.5rem;margin-bottom:8px;}
+  .product-body p{color:#c7d2dc;font-size:0.92rem;margin-bottom:18px;max-width:38ch;}
+  .product-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:600;font-size:0.9rem;
+    color:var(--cyan);
+  }
+  .product-link svg{width:16px;height:16px;transition:transform .2s;}
+  .product-card:hover .product-link svg{transform:translateX(4px);}
+
+  /* ---------- calculator (wow / interactive) ---------- */
+  .calc{
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:48px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:48px;
+    position:relative;
+    overflow:hidden;
+  }
+  .calc::before{
+    content:"";
+    position:absolute;
+    top:-40%;right:-20%;
+    width:500px;height:500px;
+    background:radial-gradient(circle, var(--cyan-dim), transparent 70%);
+    z-index:0;
+    pointer-events:none;
+  }
+  .calc-controls{position:relative;z-index:1;}
+  .field{margin-bottom:30px;}
+  .field label{
+    display:flex;justify-content:space-between;
+    font-size:0.9rem;color:var(--muted);margin-bottom:12px;
+  }
+  .field label .val{
+    color:var(--cyan);
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+  }
+  input[type=range]{
+    -webkit-appearance:none;
+    width:100%;height:4px;
+    background:var(--line);
+    border-radius:4px;
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:20px;height:20px;
+    border-radius:50%;
+    background:var(--cyan);
+    cursor:pointer;
+    box-shadow:0 0 0 6px var(--cyan-dim);
+    transition:box-shadow .2s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 9px var(--cyan-dim);}
+  input[type=range]::-moz-range-thumb{
+    width:20px;height:20px;border:none;border-radius:50%;
+    background:var(--cyan);cursor:pointer;
+    box-shadow:0 0 0 6px var(--cyan-dim);
+  }
+
+  .type-toggle{
+    display:flex;gap:10px;margin-bottom:8px;
+  }
+  .type-toggle button{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--muted);
+    font-size:0.88rem;
+    font-weight:600;
+    transition:all .2s;
+  }
+  .type-toggle button.active{
+    background:var(--cyan-dim);
+    border-color:var(--cyan);
+    color:var(--cyan);
+  }
+
+  .calc-result{
+    position:relative;z-index:1;
+    display:flex;flex-direction:column;
+    justify-content:center;
+    border-left:1px solid var(--line);
+    padding-left:48px;
+  }
+  .result-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.78rem;color:var(--muted);
+    text-transform:uppercase;letter-spacing:0.08em;
+    margin-bottom:10px;
+  }
+  .result-value{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(2.2rem,4vw,3.2rem);
+    font-weight:700;
+    color:var(--cyan);
+    margin-bottom:6px;
+    line-height:1;
+  }
+  .result-sub{color:var(--muted);font-size:0.9rem;margin-bottom:28px;}
+  .bars{
+    display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:24px;
+  }
+  .bars span{
+    flex:1;
+    background:linear-gradient(180deg, var(--cyan), var(--amber));
+    border-radius:4px 4px 0 0;
+    transition:height .4s ease;
+    opacity:0.85;
+  }
+
+  /* ---------- process ---------- */
+  .process{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    counter-reset:step;
+  }
+  .step{
+    padding:0 24px 0 0;
+    border-left:1px solid var(--line);
+    padding-left:24px;
+    position:relative;
+  }
+  .step:first-child{border-left:none;padding-left:0;}
+  .step-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.85rem;
+    color:var(--amber);
+    margin-bottom:16px;
+  }
+  .step h3{font-size:1.1rem;margin-bottom:10px;}
+  .step p{color:var(--muted);font-size:0.9rem;}
+
+  /* ---------- testimonials ---------- */
+  .testi-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .testi{
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:28px;
+  }
+  .testi p{color:#dbe4ea;font-size:0.96rem;margin-bottom:20px;}
+  .testi-author{display:flex;align-items:center;gap:12px;}
+  .avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:linear-gradient(135deg, var(--cyan), var(--amber));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;color:#03110d;
+    font-size:0.85rem;
+  }
+  .testi-author .name{font-weight:600;font-size:0.92rem;}
+  .testi-author .role{color:var(--muted);font-size:0.8rem;}
+
+  /* ---------- final CTA ---------- */
+  .final-cta{
+    text-align:center;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:80px 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .final-cta h2{
+    font-size:clamp(2rem,4.5vw,3.2rem);
+    margin-bottom:20px;
+  }
+  .final-cta p{color:var(--muted);max-width:480px;margin:0 auto 36px;}
+  .cta-form{
+    display:flex;gap:12px;
+    max-width:460px;margin:0 auto;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .cta-form input{
+    flex:1;min-width:200px;
+    padding:14px 18px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--bg-3);
+    color:var(--text);
+    font-size:0.92rem;
+    outline:none;
+    transition:border-color .2s;
+  }
+  .cta-form input:focus{border-color:var(--cyan);}
+  .cta-note{font-size:0.78rem;color:var(--muted);margin-top:16px;}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:56px 0 32px;
+  }
+  .footer-top{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:40px;
+    margin-bottom:48px;
+  }
+  .footer-cols{
+    display:flex;gap:64px;flex-wrap:wrap;
+  }
+  .footer-col h4{
+    font-size:0.85rem;margin-bottom:16px;color:var(--text);
+  }
+  .footer-col a{
+    display:block;
+    color:var(--muted);
+    font-size:0.88rem;
+    margin-bottom:10px;
+    transition:color .2s;
+  }
+  .footer-col a:hover{color:var(--cyan);}
+  .footer-bottom{
+    display:flex;justify-content:space-between;
+    padding-top:24px;border-top:1px solid var(--line);
+    font-size:0.8rem;color:var(--muted);
+    flex-wrap:wrap;gap:12px;
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- scan-line overlay for hero (wow ambience) ---------- */
+  .scanlines{
+    position:absolute;inset:0;
+    z-index:-1;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.025) 0px,
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode:overlay;
+    pointer-events:none;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .reasons-grid{grid-template-columns:1fr 1fr;}
+    .products-grid{grid-template-columns:1fr;}
+    .process{grid-template-columns:1fr 1fr;row-gap:32px;}
+    .step{border-left:none;padding-left:0;}
+    .calc{grid-template-columns:1fr;}
+    .calc-result{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:32px;}
+    .testi-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:700px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .nav-cta .btn-ghost{display:none;}
+    .reasons-grid{grid-template-columns:1fr;}
+    .process{grid-template-columns:1fr;}
+    .hero-stats{gap:28px;}
+    section{padding:72px 0;}
+    .final-cta{padding:56px 24px;}
+    .footer-top{flex-direction:column;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  :focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<header>
+  <nav>
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#2de1c2"/></svg>
+      </span>
+      VOLTIS
+    </div>
+    <ul class="nav-links">
+      <li><a href="#why">Чому ми</a></li>
+      <li><a href="#products">Рішення</a></li>
+      <li><a href="#calculator">Калькулятор</a></li>
+      <li><a href="#process">Процес</a></li>
+      <li><a href="#reviews">Відгуки</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-ghost">Консультація</a>
+      <a href="#calculator" class="btn btn-primary">Розрахувати economy</a>
+    </div>
+    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.pexels.com/photos/35105427/pexels-photo-35105427.jpeg?auto=compress&cs=tinysrgb&w=1920"
+         alt="Сонячні панелі та вітрові турбіни на заході сонця"
+         onerror="this.onerror=null;this.src='https://images.pexels.com/photos/35105433/pexels-photo-35105433.jpeg?auto=compress&cs=tinysrgb&w=1920';">
+    <div class="scanlines"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <span class="eyebrow"><span class="pulse-dot"></span> Автономне живлення вже сьогодні</span>
+    <h1>
+      <span class="line">Енергія, яку</span>
+      <span class="line glitch" data-text="не спинити">не спинити</span>
+    </h1>
+    <p class="lead">Сонячні панелі та вітрові турбіни під ключ: аудит, проєкт, монтаж і сервіс. Ваш дім чи бізнес переходить на власну генерацію за 21 день.</p>
+    <div class="hero-actions">
+      <a href="#calculator" class="btn btn-primary btn-lg">Розрахувати економію →</a>
+      <a href="#products" class="btn btn-ghost btn-lg">Дивитись рішення</a>
+    </div>
+    <div class="pulse-wire"></div>
+    <div class="hero-stats">
+      <div class="stat"><div class="num" data-count="1240">0</div><div class="lbl">об'єктів підключено</div></div>
+      <div class="stat"><div class="num" data-count="62">0</div><div class="lbl">% економії на рахунках</div></div>
+      <div class="stat"><div class="num" data-count="25">0</div><div class="lbl">років гарантії на панелі</div></div>
+    </div>
+
+    <div class="hero-preview">
+      <div class="preview-card">
+        <img src="https://images.pexels.com/photos/356049/pexels-photo-356049.jpeg?auto=compress&cs=tinysrgb&w=800"
+             alt="Сонячні панелі"
+             onerror="this.onerror=null;this.src='https://images.pexels.com/photos/35105427/pexels-photo-35105427.jpeg?auto=compress&cs=tinysrgb&w=800';">
+        <span class="preview-tag">☀ Сонячні панелі</span>
+      </div>
+      <div class="preview-card">
+        <img src="https://images.pexels.com/photos/35105433/pexels-photo-35105433.jpeg?auto=compress&cs=tinysrgb&w=800"
+             alt="Вітрові турбіни"
+             onerror="this.onerror=null;this.src='https://images.pexels.com/photos/35105427/pexels-photo-35105427.jpeg?auto=compress&cs=tinysrgb&w=800';">
+        <span class="preview-tag">🌬 Вітрові турбіни</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Чому зараз</span>
+      <h2>Ціни на мережу ростуть. Ваша генерація — ні.</h2>
+      <p>Кожен рік очікування коштує грошей. Власна сонячна або вітрова установка окупається і починає приносити чистий прибуток у вигляді економії.</p>
+    </div>
+    <div class="reasons-grid">
+      <div class="reason-card reveal">
+        <svg class="reason-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4"/></svg>
+        <h3>Незалежність від мережі</h3>
+        <p>Відключення світла більше не зупиняють ваш бізнес чи побут — автономна генерація працює цілодобово.</p>
+      </div>
+      <div class="reason-card reveal">
+        <svg class="reason-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <h3>Окупність 3–5 років</h3>
+        <p>Середній об'єкт виходить у нуль за кілька років, а далі система працює на вашу економію ще 20+ років.</p>
+      </div>
+      <div class="reason-card reveal">
+        <svg class="reason-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12l2-2 4 4L19 4l2 2-12 12z"/></svg>
+        <h3>Гарантія та сервіс</h3>
+        <p>25 років гарантії на панелі, 5 років на обладнання, моніторинг у застосунку та виїзний сервіс по всій країні.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section id="products">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Рішення</span>
+      <h2>Два джерела. Одна незалежність.</h2>
+      <p>Підбираємо конфігурацію під ваш об'єкт: сонце, вітер, або гібрид з накопичувачем.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Solar_PV_panels.jpg?width=1000"
+             alt="Сонячні панелі на даху"
+             onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Solar_Panels.jpg?width=1000';">
+        <div class="product-body">
+          <span class="product-tag">Сонячна генерація</span>
+          <h3>Сонячні панелі</h3>
+          <p>Монокристалічні панелі з ефективністю до 22%, інвертор та розумний моніторинг у реальному часі.</p>
+          <a href="#calculator" class="product-link">Підібрати систему <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/UNT_wind_turbines.jpg?width=1000"
+             alt="Вітрові турбіни в полі"
+             onerror="this.onerror=null;this.src='https://commons.wikimedia.org/wiki/Special:FilePath/Wind_turbines.jpg?width=1000';">
+        <div class="product-body">
+          <span class="product-tag">Вітрова генерація</span>
+          <h3>Вітрові турбіни</h3>
+          <p>Малі та середні вітряки для приватних господарств і ферм — стабільна генерація навіть уночі.</p>
+          <a href="#calculator" class="product-link">Підібрати систему <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Калькулятор</span>
+      <h2>Порахуйте свою економію за 10 секунд</h2>
+      <p>Рухайте повзунки — цифри та графік оновлюються миттєво.</p>
+    </div>
+    <div class="calc reveal">
+      <div class="calc-controls">
+        <div class="type-toggle">
+          <button class="active" data-type="solar">☀ Сонячні панелі</button>
+          <button data-type="wind">🌬 Вітрова турбіна</button>
+        </div>
+        <div class="field">
+          <label>Середній рахунок за електрику / міс <span class="val" id="billVal">3000 грн</span></label>
+          <input type="range" id="bill" min="500" max="15000" step="100" value="3000">
+        </div>
+        <div class="field">
+          <label>Площа даху / ділянки <span class="val" id="areaVal">40 м²</span></label>
+          <input type="range" id="area" min="10" max="300" step="5" value="40">
+        </div>
+        <div class="field">
+          <label>Годин сонця/вітру на добу <span class="val" id="sunVal">5 год</span></label>
+          <input type="range" id="sun" min="2" max="10" step="0.5" value="5">
+        </div>
+      </div>
+      <div class="calc-result">
+        <span class="result-label">Орієнтовна економія на рік</span>
+        <div class="result-value mono" id="savingsOut">0 грн</div>
+        <div class="result-sub" id="paybackOut">Термін окупності: —</div>
+        <div class="bars" id="bars">
+          <span style="height:20%"></span><span style="height:35%"></span><span style="height:50%"></span>
+          <span style="height:65%"></span><span style="height:80%"></span><span style="height:95%"></span>
+          <span style="height:70%"></span><span style="height:55%"></span><span style="height:40%"></span>
+          <span style="height:60%"></span><span style="height:85%"></span><span style="height:100%"></span>
+        </div>
+        <a href="#contact" class="btn btn-primary">Отримати точний розрахунок</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"></div></div>
+
+<section id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Як це працює</span>
+      <h2>Від заявки до першого кіловата — 21 день</h2>
+    </div>
+    <div class="process">
+      <div class="step reveal">
+        <div class="step-num">01 / Аудит</div>
+        <h3>Виїзд інженера</h3>
+        <p>Оцінюємо дах чи ділянку, споживання та потенціал генерації.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02 / Проєкт</div>
+        <h3>Індивідуальна схема</h3>
+        <p>Підбираємо потужність, обладнання та бюджет під ваші цілі.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03 / Монтаж</div>
+        <h3>Встановлення за 2–5 днів</h3>
+        <p>Наша бригада монтує систему та підключає моніторинг.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04 / Сервіс</div>
+        <h3>Супровід 24/7</h3>
+        <p>Стежимо за роботою системи віддалено та проводимо профогляди.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">Відгуки</span>
+      <h2>Що кажуть власники систем</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <p>«Рахунок за світло впав більш ніж удвічі вже за перший місяць. Монтаж зайняв три дні, все чітко за графіком.»</p>
+        <div class="testi-author"><div class="avatar">ОК</div><div><div class="name">Олена К.</div><div class="role">приватний будинок, Львівщина</div></div></div>
+      </div>
+      <div class="testi reveal">
+        <p>«Поставили вітряк на фермі — тепер генератор вмикаємо лише в аварійних випадках. Окупність рахуємо на 4 роки.»</p>
+        <div class="testi-author"><div class="avatar">МП</div><div><div class="name">Микола П.</div><div class="role">фермерське господарство</div></div></div>
+      </div>
+      <div class="testi reveal">
+        <p>«Сподобався моніторинг у застосунку — бачу вироблення енергії в реальному часі, зручно контролювати.»</p>
+        <div class="testi-author"><div class="avatar">ІС</div><div><div class="name">Ірина С.</div><div class="role">малий бізнес, Київ</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="final-cta reveal">
+      <h2><span class="glitch" data-text="Готові вимкнути">Готові вимкнути</span> залежність від мережі?</h2>
+      <p>Залиште номер — інженер зателефонує протягом дня та підбере рішення під ваш об'єкт безкоштовно.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Дякуємо! Ми на зв’язку ✓';">
+        <input type="text" placeholder="Ваше ім'я" required>
+        <input type="tel" placeholder="Номер телефону" required>
+        <button type="submit" class="btn btn-primary">Замовити дзвінок</button>
+      </form>
+      <p class="cta-note">Натискаючи кнопку, ви погоджуєтесь на обробку персональних даних.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="logo" style="margin-bottom:14px;">
+          <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#2de1c2"/></svg></span>
+          VOLTIS
+        </div>
+        <p style="color:var(--muted);font-size:0.88rem;max-width:260px;">Сонячні панелі та вітрові турбіни під ключ по всій Україні.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Рішення</h4>
+          <a href="#products">Сонячні панелі</a>
+          <a href="#products">Вітрові турбіни</a>
+          <a href="#calculator">Калькулятор</a>
+        </div>
+        <div class="footer-col">
+          <h4>Компанія</h4>
+          <a href="#why">Чому ми</a>
+          <a href="#process">Як це працює</a>
+          <a href="#reviews">Відгуки</a>
+        </div>
+        <div class="footer-col">
+          <h4>Контакти</h4>
+          <a href="tel:+380000000000">+380 00 000 00 00</a>
+          <a href="mailto:hello@voltis.ua">hello@voltis.ua</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 VOLTIS. Усі права захищено.</span>
+      <span>Зроблено з турботою про планету 🌍</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- mobile menu ----
+  const burger = document.getElementById('burger');
+  const navLinks = document.querySelector('.nav-links');
+  burger.addEventListener('click', () => {
+    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    navLinks.style.cssText += 'flex-direction:column; position:fixed; top:70px; left:0; right:0; background:#0d1526; padding:24px; gap:20px; border-bottom:1px solid rgba(255,255,255,0.08);';
+  });
+
+  // ---- scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- count-up stats ----
+  const counters = document.querySelectorAll('[data-count]');
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(eased * target).toLocaleString('uk-UA');
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString('uk-UA');
+      }
+      requestAnimationFrame(tick);
+      countIO.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => countIO.observe(c));
+
+  // ---- calculator ----
+  const billEl = document.getElementById('bill');
+  const areaEl = document.getElementById('area');
+  const sunEl = document.getElementById('sun');
+  const billVal = document.getElementById('billVal');
+  const areaVal = document.getElementById('areaVal');
+  const sunVal = document.getElementById('sunVal');
+  const savingsOut = document.getElementById('savingsOut');
+  const paybackOut = document.getElementById('paybackOut');
+  const bars = document.querySelectorAll('#bars span');
+  const typeButtons = document.querySelectorAll('.type-toggle button');
+  let type = 'solar';
+
+  typeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      typeButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      type = btn.dataset.type;
+      calc();
+    });
+  });
+
+  function calc(){
+    const bill = parseInt(billEl.value, 10);
+    const area = parseInt(areaEl.value, 10);
+    const sun = parseFloat(sunEl.value);
+    billVal.textContent = bill.toLocaleString('uk-UA') + ' грн';
+    areaVal.textContent = area + ' м²';
+    sunVal.textContent = sun + ' год';
+
+    const efficiency = type === 'solar' ? 1 : 0.85;
+    const potential = area * sun * efficiency * 2.1; // умовний коефіцієнт вироблення
+    const monthlySavings = Math.min(bill * 0.95, potential * 3.4);
+    const yearlySavings = Math.round(monthlySavings * 12);
+    const systemCost = area * (type === 'solar' ? 5200 : 6800);
+    const payback = (systemCost / Math.max(yearlySavings,1)).toFixed(1);
+
+    savingsOut.textContent = yearlySavings.toLocaleString('uk-UA') + ' грн';
+    paybackOut.textContent = 'Термін окупності: ~' + payback + ' років';
+
+    bars.forEach((b, i) => {
+      const h = 20 + Math.min(80, (monthlySavings / 40) + i * 4 + Math.sin(i) * 6);
+      b.style.height = Math.max(15, Math.min(100, h)) + '%';
+    });
+  }
+  [billEl, areaEl, sunEl].forEach(el => el.addEventListener('input', calc));
+  calc();
+
+  // ---- header shrink on scroll ----
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header.style.boxShadow = window.scrollY > 20 ? '0 8px 30px rgba(0,0,0,0.35)' : 'none';
+  });
+</script>
+</body>
+</html>
